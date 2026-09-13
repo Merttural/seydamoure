@@ -217,20 +217,3 @@ form.addEventListener("submit", (event) => {
   window.open(`https://wa.me/905373112001?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
 });
 
-const hero = document.querySelector(".sd-hero");
-const heroVideos = [...(hero?.querySelectorAll("video") || [])];
-if (heroVideos.length && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-  const playHeroVideos = () => {
-    heroVideos.forEach((video) => {
-      video.muted = true;
-      video.defaultMuted = true;
-      video.playsInline = true;
-      video.play().catch(() => {});
-    });
-  };
-  heroVideos.forEach((video) => video.addEventListener("canplay", playHeroVideos));
-  document.addEventListener("visibilitychange", () => {
-    if (!document.hidden) playHeroVideos();
-  });
-  playHeroVideos();
-}
