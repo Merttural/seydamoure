@@ -218,17 +218,19 @@ form.addEventListener("submit", (event) => {
 });
 
 const hero = document.querySelector(".sd-hero");
-const heroVideo = hero?.querySelector(".sd-hero__video");
-if (heroVideo && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-  heroVideo.muted = true;
-  heroVideo.defaultMuted = true;
-  heroVideo.playsInline = true;
-  const playHeroVideo = () => {
-    heroVideo.play().catch(() => {});
+const heroVideos = [...(hero?.querySelectorAll("video") || [])];
+if (heroVideos.length && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  const playHeroVideos = () => {
+    heroVideos.forEach((video) => {
+      video.muted = true;
+      video.defaultMuted = true;
+      video.playsInline = true;
+      video.play().catch(() => {});
+    });
   };
-  heroVideo.addEventListener("canplay", playHeroVideo);
+  heroVideos.forEach((video) => video.addEventListener("canplay", playHeroVideos));
   document.addEventListener("visibilitychange", () => {
-    if (!document.hidden) playHeroVideo();
+    if (!document.hidden) playHeroVideos();
   });
-  playHeroVideo();
+  playHeroVideos();
 }
