@@ -328,7 +328,7 @@ main {
   position: relative;
   width: 100%;
   min-height: 0;
-  aspect-ratio: 5 / 3;
+  aspect-ratio: 2 / 1;
   overflow: hidden;
   background: #d8cfc0;
 }
@@ -921,7 +921,7 @@ main {
   .sd-site-header { min-height: 250px; padding-top: 64px; }
   .sd-menu-button, .sd-menu-close { top: 58px; right: 48px; }
   main { width: calc(100% - 64px); }
-  .sd-hero { height: auto; min-height: 0; aspect-ratio: 5 / 3; }
+  .sd-hero { height: auto; min-height: 0; aspect-ratio: 2 / 1; }
   .sd-hero__image { object-position: center center; }
   .sd-hero__statement { width: min(350px, 45%); }
   .sd-section { padding: 112px 48px; }
