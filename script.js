@@ -87,6 +87,45 @@ const revealObserver = new IntersectionObserver(
 );
 document.querySelectorAll(".sd-reveal").forEach((section) => revealObserver.observe(section));
 
+const startEndlessFlow = (viewport, track, originalCount, speed) => {
+  if (!viewport || !track || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    return { pause() {}, resume() {} };
+  }
+
+  let paused = false;
+  const loopWidth = () => {
+    const first = track.firstElementChild;
+    if (!first) return 0;
+    const styles = getComputedStyle(track);
+    const gap = Number.parseFloat(styles.columnGap || styles.gap) || 0;
+    return (first.getBoundingClientRect().width + gap) * originalCount;
+  };
+
+  const tick = () => {
+    const width = loopWidth();
+    if (!paused && width > 0) {
+      viewport.scrollLeft += speed;
+      if (viewport.scrollLeft >= width) viewport.scrollLeft -= width;
+    }
+    requestAnimationFrame(tick);
+  };
+
+  const pause = () => {
+    paused = true;
+  };
+  const resume = () => {
+    paused = false;
+  };
+
+  viewport.addEventListener("pointerdown", pause);
+  viewport.addEventListener("pointerup", resume);
+  viewport.addEventListener("pointercancel", resume);
+  viewport.addEventListener("mouseenter", pause);
+  viewport.addEventListener("mouseleave", resume);
+  requestAnimationFrame(tick);
+  return { pause, resume };
+};
+
 const gallery = document.querySelector(".sd-gallery");
 const track = gallery.querySelector(".sd-gallery__track");
 const originals = [...track.children];
@@ -94,40 +133,19 @@ const originals = [...track.children];
 originals.forEach((item) => track.append(item.cloneNode(true)));
 track.querySelectorAll("figure:nth-child(n+7) img[data-placeholder]").forEach(initializePlaceholder);
 
-const configureGalleryFlow = () => {
-  const firstItem = track.firstElementChild;
-  if (!firstItem) return;
-  const distance = (firstItem.getBoundingClientRect().width + 5) * originals.length;
-  track.style.setProperty("--sd-gallery-distance", `${distance}px`);
-  track.style.setProperty("--sd-gallery-duration", `${Math.max(65, distance / 20)}s`);
-};
-
-let galleryResizeTimer;
-window.addEventListener("resize", () => {
-  window.clearTimeout(galleryResizeTimer);
-  galleryResizeTimer = window.setTimeout(configureGalleryFlow, 150);
-});
-configureGalleryFlow();
+const galleryViewport = gallery.querySelector(".sd-gallery__viewport");
+const galleryFlow = startEndlessFlow(galleryViewport, track, originals.length, 0.45);
 
 const reviews = document.querySelector(".sd-reviews");
 const reviewsTrack = reviews.querySelector(".sd-reviews__track");
 const reviewCards = [...reviewsTrack.children];
 reviewCards.forEach((card) => reviewsTrack.append(card.cloneNode(true)));
-
-const configureReviewsFlow = () => {
-  const firstCard = reviewsTrack.firstElementChild;
-  if (!firstCard) return;
-  const distance = (firstCard.getBoundingClientRect().width + 12) * reviewCards.length;
-  reviewsTrack.style.setProperty("--sd-reviews-distance", `${distance}px`);
-  reviewsTrack.style.setProperty("--sd-reviews-duration", `${Math.max(55, distance / 18)}s`);
-};
-
-let reviewsResizeTimer;
-window.addEventListener("resize", () => {
-  window.clearTimeout(reviewsResizeTimer);
-  reviewsResizeTimer = window.setTimeout(configureReviewsFlow, 150);
-});
-configureReviewsFlow();
+const reviewsFlow = startEndlessFlow(
+  reviews.querySelector(".sd-reviews__viewport"),
+  reviewsTrack,
+  reviewCards.length,
+  0.4,
+);
 
 const lightbox = document.querySelector(".sd-lightbox");
 const lightboxImage = lightbox.querySelector(".sd-lightbox__image");
@@ -143,7 +161,6 @@ const showLightboxImage = (index) => {
 };
 
 let galleryPointerX = 0;
-const galleryViewport = gallery.querySelector(".sd-gallery__viewport");
 galleryViewport.addEventListener("pointerdown", (event) => {
   galleryPointerX = event.clientX;
 });
@@ -157,7 +174,7 @@ gallery.addEventListener("click", (event) => {
     (image) => (image.currentSrc || image.src) === selectedSrc,
   );
   showLightboxImage(selectedIndex >= 0 ? selectedIndex : 0);
-  track.style.animationPlayState = "paused";
+  galleryFlow.pause();
   lightbox.showModal();
 });
 
@@ -174,7 +191,7 @@ lightbox.addEventListener("click", (event) => {
   if (event.target === lightbox) lightbox.close();
 });
 lightbox.addEventListener("close", () => {
-  track.style.animationPlayState = "";
+  galleryFlow.resume();
 });
 
 const form = document.querySelector(".sd-form");
@@ -203,11 +220,15 @@ form.addEventListener("submit", (event) => {
 const hero = document.querySelector(".sd-hero");
 const heroVideo = hero?.querySelector(".sd-hero__video");
 if (heroVideo && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-  const showHeroVideo = () => {
-    hero.classList.add("is-video");
-    heroVideo.play().catch(() => hero.classList.remove("is-video"));
+  heroVideo.muted = true;
+  heroVideo.defaultMuted = true;
+  heroVideo.playsInline = true;
+  const playHeroVideo = () => {
+    heroVideo.play().catch(() => {});
   };
-  heroVideo.addEventListener("loadeddata", showHeroVideo);
-  heroVideo.addEventListener("error", () => hero.classList.remove("is-video"));
-  if (heroVideo.readyState >= 2) showHeroVideo();
+  heroVideo.addEventListener("canplay", playHeroVideo);
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) playHeroVideo();
+  });
+  playHeroVideo();
 }
