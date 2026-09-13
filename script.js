@@ -142,7 +142,14 @@ const showLightboxImage = (index) => {
   lightboxImage.alt = selectedImage.alt;
 };
 
+let galleryPointerX = 0;
+const galleryViewport = gallery.querySelector(".sd-gallery__viewport");
+galleryViewport.addEventListener("pointerdown", (event) => {
+  galleryPointerX = event.clientX;
+});
+
 gallery.addEventListener("click", (event) => {
+  if (Math.abs(event.clientX - galleryPointerX) > 8) return;
   const selectedImage = event.target.closest("figure img");
   if (!selectedImage) return;
   const selectedSrc = selectedImage.currentSrc || selectedImage.src;
@@ -192,3 +199,15 @@ form.addEventListener("submit", (event) => {
   formStatus.textContent = "WhatsApp açılıyor…";
   window.open(`https://wa.me/905373112001?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
 });
+
+const hero = document.querySelector(".sd-hero");
+const heroVideo = hero?.querySelector(".sd-hero__video");
+if (heroVideo && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  const showHeroVideo = () => {
+    hero.classList.add("is-video");
+    heroVideo.play().catch(() => hero.classList.remove("is-video"));
+  };
+  heroVideo.addEventListener("loadeddata", showHeroVideo);
+  heroVideo.addEventListener("error", () => hero.classList.remove("is-video"));
+  if (heroVideo.readyState >= 2) showHeroVideo();
+}

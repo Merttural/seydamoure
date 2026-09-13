@@ -210,10 +210,12 @@ button {
 
 .sd-menu-overlay__monogram {
   z-index: 1;
-  margin: 0 0 26px;
-  color: var(--sd-champagne);
+  margin: 0 0 26px -0.1em;
+  color: #000;
   font-family: var(--sd-script);
-  font-size: 2.4rem;
+  font-size: clamp(3.8rem, 6vw, 6.2rem);
+  font-weight: 400;
+  line-height: 0.88;
 }
 
 .sd-menu-nav {
@@ -326,11 +328,25 @@ main {
   background: #d3c8b8;
 }
 
-.sd-hero__image {
+.sd-hero__image,
+.sd-hero__video {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center 57%;
+}
+
+.sd-hero__video {
+  position: absolute;
+  inset: 0;
+  display: none;
+  background: #d3c8b8;
+}
+
+.sd-hero.is-video .sd-hero__video { display: block; }
+.sd-hero.is-video .sd-hero__image { opacity: 0; }
+
+.sd-hero__image {
   animation: sd-hero-arrive 1.8s cubic-bezier(.2,.6,.3,1) both;
 }
 
@@ -521,7 +537,7 @@ main {
 
 .sd-gallery figure {
   position: relative;
-  flex: 0 0 calc((100% - 25px) / 6);
+  flex: 0 0 calc((100% - 20px) / 4.5);
   aspect-ratio: 0.74;
   margin: 0;
   overflow: hidden;
@@ -890,7 +906,7 @@ main {
 
 @media (max-width: 1180px) {
   .sd-about { grid-template-columns: 0.95fr 1.05fr; }
-  .sd-gallery figure { flex-basis: calc((100% - 15px) / 4); }
+  .sd-gallery figure { flex-basis: calc((100% - 15px) / 3.2); }
   .sd-offer { gap: 70px; }
   .sd-services { grid-template-columns: 0.55fr 1.45fr; gap: 5vw; }
 }
@@ -900,7 +916,8 @@ main {
   .sd-menu-button, .sd-menu-close { top: 58px; right: 48px; }
   main { width: calc(100% - 64px); }
   .sd-hero { min-height: 0; aspect-ratio: 16 / 8.5; }
-  .sd-hero__image { object-position: center 56%; }
+  .sd-hero__image,
+  .sd-hero__video { object-position: center 56%; }
   .sd-hero__statement { width: min(350px, 45%); }
   .sd-section { padding: 112px 48px; }
   .sd-about { grid-template-columns: 1fr; row-gap: 70px; min-height: auto; }
@@ -908,7 +925,7 @@ main {
   .sd-about__ornament { min-height: 300px; }
   .sd-services { grid-template-columns: 1fr; gap: 20px; }
   .sd-services__intro { max-width: 520px; }
-  .sd-gallery figure { flex-basis: calc((100% - 10px) / 3); }
+  .sd-gallery figure { flex-basis: calc((100% - 10px) / 2.4); }
   .sd-offer { grid-template-columns: 1fr; gap: 100px; }
   .sd-offer__form-wrap { max-width: 760px; }
   .sd-contact {
@@ -933,13 +950,39 @@ main {
   .sd-menu-button, .sd-menu-close { top: 64px; right: 38px; }
   main { width: calc(100% - 52px); }
   .sd-hero { min-height: 0; aspect-ratio: 4 / 3; }
-  .sd-hero__image { object-position: center 55%; }
+  .sd-hero__image,
+  .sd-hero__video { object-position: center 55%; }
   .sd-hero__statement { width: min(330px, 52%); }
   .sd-about { grid-template-columns: 1fr; min-height: auto; }
   .sd-about__ornament { min-height: 320px; }
   .sd-services { grid-template-columns: 1fr; gap: 15px; }
   .sd-services__list article { grid-template-columns: 45px 0.75fr 1fr; }
-  .sd-gallery figure { flex-basis: calc((100% - 10px) / 3); }
+  .sd-gallery__viewport,
+  .sd-reviews__viewport {
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    touch-action: pan-x;
+    -webkit-overflow-scrolling: touch;
+  }
+  .sd-gallery__viewport::-webkit-scrollbar,
+  .sd-reviews__viewport::-webkit-scrollbar { display: none; }
+  .sd-gallery__track,
+  .sd-reviews__track {
+    width: max-content;
+    animation: none;
+    transform: none !important;
+  }
+  .sd-gallery figure {
+    flex-basis: min(78vw, 340px);
+    scroll-snap-align: start;
+  }
+  .sd-review-card {
+    flex-basis: min(84vw, 360px);
+    scroll-snap-align: start;
+  }
   .sd-offer { grid-template-columns: 1fr; }
   .sd-contact { min-height: 650px; padding-left: 0; border-top: 1px solid var(--sd-faint-line); border-left: 0; padding-top: 80px; }
   .sd-footer { width: calc(100% - 52px); }
@@ -960,7 +1003,8 @@ main {
   }
   .sd-site-header { min-height: 194px; padding: 55px 48px 28px 26px; }
   .sd-brand { max-width: calc(100vw - 88px); }
-  .sd-brand__name { font-size: clamp(3rem, 14.5vw, 4.15rem); white-space: nowrap; }
+  .sd-brand__name,
+  .sd-menu-overlay__monogram { font-size: clamp(3rem, 14.5vw, 4.15rem); white-space: nowrap; }
   .sd-brand__tagline { margin-top: 16px; font-size: 0.68rem; }
   .sd-menu-button, .sd-menu-close { top: 60px; right: 22px; transform: scale(0.82); }
   main { width: calc(100% - 30px); }
@@ -968,7 +1012,8 @@ main {
   .sd-marquee__group { gap: 25px; padding: 11px 25px 11px 0; }
   .sd-marquee__group span { font-size: 0.66rem; letter-spacing: 0.17em; }
   .sd-hero { min-height: 305px; aspect-ratio: 1 / 1.05; }
-  .sd-hero__image { object-position: center 55%; }
+  .sd-hero__image,
+  .sd-hero__video { object-position: center 55%; }
   .sd-hero__statement { top: 52%; left: 22px; width: min(270px, 76%); font-size: 1.08rem; line-height: 1.32; }
   .sd-hero__line { bottom: 13%; left: 24px; }
   .sd-hero__line h1 { font-size: clamp(3.1rem, 16vw, 4.4rem); }
@@ -986,7 +1031,7 @@ main {
   .sd-services__list article p { grid-column: 2; }
   .sd-services__list h3 { font-size: 1.3rem; }
   .sd-gallery__heading { align-items: center; padding: 0 20px; }
-  .sd-gallery figure { flex-basis: calc((100% - 5px) / 1.55); }
+  .sd-gallery figure { flex-basis: min(86vw, 360px); }
   .sd-gallery figcaption { opacity: 1; transform: none; }
   .sd-lightbox { width: calc(100vw - 34px); max-height: calc(100dvh - 50px); }
   .sd-lightbox__image { max-height: calc(100dvh - 50px); }
@@ -1002,7 +1047,7 @@ main {
   .sd-contact blockquote { margin-top: 65px; padding: 55px 28px; font-size: 1.55rem; }
   .sd-reviews__heading { align-items: flex-start; flex-direction: column; gap: 0; }
   .sd-reviews__summary { margin: -10px 0 38px; }
-  .sd-review-card { flex-basis: 86%; min-height: 250px; padding: 26px; }
+  .sd-review-card { flex-basis: min(88vw, 360px); min-height: 250px; padding: 26px; }
   .sd-footer {
     width: calc(100% - 30px);
     min-height: 150px;
@@ -1017,7 +1062,8 @@ main {
 
 @media (max-width: 400px) {
   .sd-site-header { min-height: 182px; padding-top: 52px; }
-  .sd-brand__name { font-size: 3.15rem; }
+  .sd-brand__name,
+  .sd-menu-overlay__monogram { font-size: 3.15rem; }
   .sd-brand__tagline { font-size: 0.63rem; letter-spacing: 0.06em; }
   .sd-menu-button, .sd-menu-close { right: 18px; }
   .sd-hero { min-height: 345px; aspect-ratio: 0.92; }
@@ -1027,6 +1073,8 @@ main {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .sd-hero.is-video .sd-hero__video { display: none; }
+  .sd-hero.is-video .sd-hero__image { opacity: 1; }
   html { scroll-behavior: auto; }
   *, *::before, *::after {
     scroll-behavior: auto !important;

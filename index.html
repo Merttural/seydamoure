@@ -49,7 +49,7 @@
       <button class="sd-menu-close" type="button" aria-label="Menüyü kapat">
         <span></span><span></span>
       </button>
-      <p class="sd-menu-overlay__monogram">Seyd'Amour'e</p>
+      <p class="sd-menu-overlay__monogram">SeydAmour’e</p>
       <nav class="sd-menu-nav" aria-label="Ana menü">
         <a href="#anasayfa">Anasayfa</a>
         <a href="#hakkimizda">Hakkımızda</a>
@@ -82,6 +82,17 @@
       </div>
 
       <section class="sd-hero" aria-label="Seyd'Amour'e">
+        <video
+          class="sd-hero__video"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="metadata"
+          poster="images/hero.jpg"
+        >
+          <source src="images/hero.mp4" type="video/mp4" />
+        </video>
         <img
           class="sd-hero__image"
           src="images/hero.jpg"
@@ -91,7 +102,6 @@
           fetchpriority="high"
           data-placeholder="hero"
         />
-        
       </section>
 
       <section class="sd-about sd-section sd-reveal" id="hakkimizda">
