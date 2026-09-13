@@ -109,6 +109,26 @@ window.addEventListener("resize", () => {
 });
 configureGalleryFlow();
 
+const reviews = document.querySelector(".sd-reviews");
+const reviewsTrack = reviews.querySelector(".sd-reviews__track");
+const reviewCards = [...reviewsTrack.children];
+reviewCards.forEach((card) => reviewsTrack.append(card.cloneNode(true)));
+
+const configureReviewsFlow = () => {
+  const firstCard = reviewsTrack.firstElementChild;
+  if (!firstCard) return;
+  const distance = (firstCard.getBoundingClientRect().width + 12) * reviewCards.length;
+  reviewsTrack.style.setProperty("--sd-reviews-distance", `${distance}px`);
+  reviewsTrack.style.setProperty("--sd-reviews-duration", `${Math.max(55, distance / 18)}s`);
+};
+
+let reviewsResizeTimer;
+window.addEventListener("resize", () => {
+  window.clearTimeout(reviewsResizeTimer);
+  reviewsResizeTimer = window.setTimeout(configureReviewsFlow, 150);
+});
+configureReviewsFlow();
+
 const lightbox = document.querySelector(".sd-lightbox");
 const lightboxImage = lightbox.querySelector(".sd-lightbox__image");
 const lightboxClose = lightbox.querySelector(".sd-lightbox__close");
