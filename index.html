@@ -8,7 +8,7 @@
       name="description"
       content="Seyd'Amour'e, Fransız esintilerinden ilham alan zarif davetler, düğünler ve özel organizasyonlar tasarlar. Hayallerinizi unutulmaz anlara dönüştürelim."
     />
-    <meta name="theme-color" content="#f8f5f0" />
+    <meta name="theme-color" content="#ffffff" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="tr_TR" />
     <meta property="og:title" content="Seyd'Amour'e | Fransız Esintileriyle Özel Organizasyonlar" />
@@ -20,7 +20,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/styles.css" />
@@ -36,9 +36,9 @@
     <header class="sd-site-header" id="anasayfa">
       <a class="sd-brand" href="#anasayfa" aria-label="Seyd'Amour'e ana sayfa">
         <h1 class="sd-brand__name">SeydAmour’e</h1>
-        <span class="sd-brand__tagline"
-          >Hayallerinizi Fransız esintileriyle<br />büyülü anlara dönüştürelim.</span
-        >
+        <span class="sd-brand__tagline">Organizasyon <i></i> Event</span>
+        <span class="sd-brand__eyebrow">Hayallerinizi Fransız esintileriyle</span>
+        <span class="sd-brand__promise">Büyülü anlara dönüştürelim.</span>
       </a>
       <button class="sd-menu-button" type="button" aria-label="Menüyü aç" aria-expanded="false">
         <span></span><span></span><span></span>
@@ -82,12 +82,22 @@
       </div>
 
       <section class="sd-hero" aria-label="Seyd'Amour'e">
+        <video
+          class="sd-hero__video"
+          src="/images/hero.mp4"
+          poster="/images/hero.jpg"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="auto"
+        ></video>
         <img
           class="sd-hero__image"
           src="/images/hero.jpg"
           alt="Gün batımında kırların ortasında kristal avizeli iki kişilik sofra"
-          width="1920"
-          height="960"
+          width="1080"
+          height="600"
           fetchpriority="high"
           data-placeholder="hero"
         />
@@ -131,8 +141,8 @@
         <div class="sd-about__ornament">
           <img
             src="images/about.jpg"
-            alt="Fransız esintili zarif nişan ve davet dekorasyonu"
-            width="840"
+            alt="Kristal avizeli nişan köşesi, beyaz sandalyeler ve isimli ayna"
+            width="767"
             height="1024"
             loading="lazy"
           />
@@ -157,6 +167,11 @@
           </article>
           <article>
             <span>03</span>
+            <h3>Bekârlığa Veda</h3>
+            <p>Zarif, samimi ve unutulmaz bir veda gecesi; sizin ritminize uygun detaylarla.</p>
+          </article>
+          <article>
+            <span>04</span>
             <h3>Özel Davetler</h3>
             <p>Romantik sofralar, zarif kutlamalar ve hatırlanacak incelikli detaylar.</p>
           </article>
@@ -184,6 +199,7 @@
             <figure><img src="images/gallery-10.jpg" alt="Ağaç altında kristal avizeli dantel örtülü bahçe sofrası" width="520" height="680" loading="lazy" /><figcaption>Bahçe avizesi</figcaption></figure>
             <figure><img src="images/gallery-11.jpg" alt="Beyaz tül kemerli iki kişilik bahçe sofrası" width="520" height="680" loading="lazy" /><figcaption>Beyaz tül</figcaption></figure>
             <figure><img src="images/gallery-12.jpg" alt="Dantel örtülü ayna ve şamdanlı özel köşe" width="520" height="680" loading="lazy" /><figcaption>Ayna köşesi</figcaption></figure>
+            <figure><img src="images/gallery-13.jpg" alt="Fransız esintili zarif nişan ve davet dekorasyonu" width="520" height="680" loading="lazy" /><figcaption>Nişan dekoru</figcaption></figure>
           </div>
         </div>
       </section>
@@ -203,14 +219,21 @@
               Organizasyon Türü
               <select name="eventType" required>
                 <option value="" selected disabled>Seçiniz</option>
-                <option>Söz & Nişan</option><option>Evlilik Teklifi</option><option>Bekarlığa Veda</option>
-                <option>Özel Davet</option><option>Diğer</option>
+                <option>Söz & Nişan</option>
+                <option>Evlilik Teklifi</option>
+                <option>Bekârlığa Veda</option>
+                <option>Yıl Dönümü</option>
+                <option>Özel Davet</option>
+                <option>Diğer</option>
               </select>
             </label>
             <label>Tarih<input type="date" name="date" /></label>
-            <label>Şehir<input type="text" name="city" autocomplete="address-level2" /></label>
+            <label>Şehir<input type="text" name="city" value="İstanbul" readonly /></label>
             <label class="sd-form__wide">Notlarınız<textarea name="notes" rows="4"></textarea></label>
-            <button class="sd-form__submit" type="submit">WhatsApp ile Gönder <span>→</span></button>
+            <div class="sd-form__actions">
+              <button class="sd-form__submit" type="submit" name="sendVia" value="whatsapp">WhatsApp ile Gönder <span>→</span></button>
+              <button class="sd-form__submit sd-form__submit--ghost" type="submit" name="sendVia" value="email">E-posta ile Gönder <span>→</span></button>
+            </div>
             <p class="sd-form__status" role="status" aria-live="polite"></p>
           </form>
         </div>
@@ -254,10 +277,10 @@
       <section class="sd-reviews sd-section sd-reveal" id="yorumlar">
         <div class="sd-reviews__heading">
           <div>
-            <h2 class="sd-section-title">Mutlu Anlardan Notlar</h2>
+            <h2 class="sd-section-title">Mutlu Anlardan Mesajlar</h2>
           </div>
           <div class="sd-reviews__summary">
-            <small>Organizasyon sonrası WhatsApp’tan gelen gerçek notlar</small>
+            <small>Organizasyon sonrası WhatsApp’tan gelen gerçek mesajlar</small>
           </div>
         </div>
 

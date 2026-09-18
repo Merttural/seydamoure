@@ -89,10 +89,11 @@ document.querySelectorAll(".sd-reveal").forEach((section) => revealObserver.obse
 
 const startEndlessFlow = (viewport, track, originalCount, speed) => {
   if (!viewport || !track || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    return { pause() {}, resume() {} };
+    return { pause() {}, resume() {}, isPaused: () => false };
   }
 
   let paused = false;
+  let lastTime = performance.now();
   const loopWidth = () => {
     const first = track.firstElementChild;
     if (!first) return 0;
@@ -101,10 +102,12 @@ const startEndlessFlow = (viewport, track, originalCount, speed) => {
     return (first.getBoundingClientRect().width + gap) * originalCount;
   };
 
-  const tick = () => {
+  const tick = (now) => {
     const width = loopWidth();
+    const delta = Math.min(now - lastTime, 48);
+    lastTime = now;
     if (!paused && width > 0) {
-      viewport.scrollLeft += speed;
+      viewport.scrollLeft += speed * (delta / 16.67);
       if (viewport.scrollLeft >= width) viewport.scrollLeft -= width;
     }
     requestAnimationFrame(tick);
@@ -115,15 +118,21 @@ const startEndlessFlow = (viewport, track, originalCount, speed) => {
   };
   const resume = () => {
     paused = false;
+    lastTime = performance.now();
+  };
+
+  const tryResume = () => {
+    if (document.querySelector(".sd-lightbox")?.open) return;
+    resume();
   };
 
   viewport.addEventListener("pointerdown", pause);
-  viewport.addEventListener("pointerup", resume);
-  viewport.addEventListener("pointercancel", resume);
+  viewport.addEventListener("pointerup", tryResume);
+  viewport.addEventListener("pointercancel", tryResume);
   viewport.addEventListener("mouseenter", pause);
-  viewport.addEventListener("mouseleave", resume);
+  viewport.addEventListener("mouseleave", tryResume);
   requestAnimationFrame(tick);
-  return { pause, resume };
+  return { pause, resume, isPaused: () => paused };
 };
 
 const gallery = document.querySelector(".sd-gallery");
@@ -134,7 +143,7 @@ originals.forEach((item) => track.append(item.cloneNode(true)));
 track.querySelectorAll("figure:nth-child(n+7) img[data-placeholder]").forEach(initializePlaceholder);
 
 const galleryViewport = gallery.querySelector(".sd-gallery__viewport");
-const galleryFlow = startEndlessFlow(galleryViewport, track, originals.length, 0.45);
+const galleryFlow = startEndlessFlow(galleryViewport, track, originals.length, 0.65);
 
 const reviews = document.querySelector(".sd-reviews");
 const reviewsTrack = reviews.querySelector(".sd-reviews__track");
@@ -144,7 +153,7 @@ const reviewsFlow = startEndlessFlow(
   reviews.querySelector(".sd-reviews__viewport"),
   reviewsTrack,
   reviewCards.length,
-  0.4,
+  0.55,
 );
 
 const lightbox = document.querySelector(".sd-lightbox");
@@ -158,6 +167,14 @@ const showLightboxImage = (index) => {
   const selectedImage = galleryImages[lightboxIndex];
   lightboxImage.src = selectedImage.currentSrc || selectedImage.src;
   lightboxImage.alt = selectedImage.alt;
+};
+
+const stepLightbox = (delta) => {
+  showLightboxImage(lightboxIndex + delta);
+  lightboxImage.animate([{ opacity: 0.4 }, { opacity: 1 }], {
+    duration: 280,
+    easing: "ease-out",
+  });
 };
 
 let galleryPointerX = 0;
@@ -178,12 +195,30 @@ gallery.addEventListener("click", (event) => {
   lightbox.showModal();
 });
 
-lightboxImage.addEventListener("click", () => {
-  showLightboxImage(lightboxIndex + 1);
-  lightboxImage.animate([{ opacity: 0.45 }, { opacity: 1 }], {
-    duration: 400,
-    easing: "ease-out",
-  });
+let lightboxPointerX = 0;
+let lightboxDragged = false;
+lightboxImage.addEventListener("pointerdown", (event) => {
+  lightboxPointerX = event.clientX;
+  lightboxDragged = false;
+});
+lightboxImage.addEventListener("pointerup", (event) => {
+  const delta = event.clientX - lightboxPointerX;
+  if (Math.abs(delta) < 40) return;
+  lightboxDragged = true;
+  stepLightbox(delta < 0 ? 1 : -1);
+});
+lightboxImage.addEventListener("click", (event) => {
+  if (lightboxDragged) {
+    lightboxDragged = false;
+    return;
+  }
+  const rect = lightboxImage.getBoundingClientRect();
+  stepLightbox(event.clientX - rect.left < rect.width / 2 ? -1 : 1);
+});
+document.addEventListener("keydown", (event) => {
+  if (!lightbox.open) return;
+  if (event.key === "ArrowRight") stepLightbox(1);
+  if (event.key === "ArrowLeft") stepLightbox(-1);
 });
 
 lightboxClose.addEventListener("click", () => lightbox.close());
@@ -199,6 +234,7 @@ const formStatus = document.querySelector(".sd-form__status");
 form.addEventListener("submit", (event) => {
   event.preventDefault();
   const data = new FormData(form);
+  const via = event.submitter?.value || "whatsapp";
   const message = [
     "Merhaba SeydAmour’e,",
     "",
@@ -209,11 +245,29 @@ form.addEventListener("submit", (event) => {
     `E-posta: ${data.get("email") || "—"}`,
     `Organizasyon Türü: ${data.get("eventType") || "—"}`,
     `Tarih: ${data.get("date") || "—"}`,
-    `Şehir: ${data.get("city") || "—"}`,
+    `Şehir: İstanbul`,
     `Notlar: ${data.get("notes") || "—"}`,
   ].join("\n");
+
+  if (via === "email") {
+    formStatus.textContent = "E-posta açılıyor…";
+    const subject = "SeydAmour’e organizasyon teklifi";
+    window.location.href = `mailto:seydamoure@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
+    return;
+  }
 
   formStatus.textContent = "WhatsApp açılıyor…";
   window.open(`https://wa.me/905373112001?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
 });
+
+const heroVideo = document.querySelector(".sd-hero__video");
+if (heroVideo) {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    heroVideo.remove();
+  } else {
+    const playHero = () => heroVideo.play().catch(() => {});
+    if (heroVideo.readyState >= 2) playHero();
+    else heroVideo.addEventListener("canplay", playHero, { once: true });
+  }
+}
 
