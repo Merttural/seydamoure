@@ -1173,33 +1173,3 @@ main {
     text-align: center !important;
   }
 }
-/* WhatsApp inceleme kartı üst başlık düzenlemesi */
-.sd-review-card header {
-  display: block !important;
-  padding-left: 0 !important;
-  margin-bottom: 12px !important;
-}
-
-/* Siyah profil dairesini ve içindeki ikonu kesin olarak gizle */
-.sd-review-card header figure,
-.sd-review-card header div,
-.sd-review-card header span:has(svg),
-.sd-review-card header img,
-.sd-review-card header svg {
-  display: none !important;
-  visibility: hidden !important;
-  width: 0 !important;
-  height: 0 !important;
-}
-
-/* İsim ve alt detayların hizalanması */
-.sd-review-card header strong {
-  display: block !important;
-  font-size: 1.05rem !important;
-  margin-bottom: 2px !important;
-}
-
-.sd-review-card header small {
-  display: block !important;
-  opacity: 0.7 !important;
-}
