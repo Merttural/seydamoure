@@ -1161,21 +1161,26 @@ main {
     transition-duration: 0.01ms !important;
   }
 }
-/* Yorum başlığındaki metinleri yan yana düzeltme */
-.sd-review__author-info,
-.sd-reviews__author-info,
-.sd-review__meta {
-  display: flex !important;
-  flex-direction: row !important;
-  flex-wrap: wrap !important;
-  align-items: center !important;
-  gap: 6px !important;
-  white-space: nowrap !important;
+/* Yorum kartı isim ve detaylarını yan yana genişletme */
+.sd-review__author,
+.sd-reviews__author,
+.sd-review__meta,
+.sd-review-author {
+  width: 100% !important;
+  max-width: none !important;
+  display: block !important;
+  text-align: left !important;
 }
 
-.sd-review__author-info span,
-.sd-review__meta span,
-.sd-review__meta p {
-  display: inline-block !important;
-  margin: 0 !important;
+.sd-review__author *,
+.sd-reviews__author *,
+.sd-review__meta * {
+  display: inline !important;
+  width: auto !important;
+  white-space: normal !important;
+}
+
+.sd-review__avatar,
+.sd-reviews__avatar {
+  display: none !important;
 }
