@@ -1173,8 +1173,11 @@ main {
     text-align: center !important;
   }
 }
-/* WhatsApp mesajlarındaki siyah daireyi tamamen kaldırma */
-.sd-review-card header figure,
-.sd-review-card header .sd-avatar {
+/* WhatsApp avatar/resim alanını ve ikonları tamamen gizle */
+.sd-review-card img,
+.sd-review-card svg,
+.sd-review-card figure,
+.sd-review-card [class*="avatar"],
+.sd-review-card [class*="icon"] {
   display: none !important;
 }
