@@ -1161,14 +1161,3 @@ main {
     transition-duration: 0.01ms !important;
   }
 }
-.sd-site-header {
-  position: relative !important;
-}
-
-.sd-menu-button {
-  position: absolute !important;
-  right: 25px !important;
-  top: 50% !important;
-  transform: translateY(-50%) !important;
-  margin: 0 !important;
-}
