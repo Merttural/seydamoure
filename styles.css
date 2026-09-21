@@ -1161,12 +1161,13 @@ main {
     transition-duration: 0.01ms !important;
   }
 }
-/* Mobil ekranda logonun telefona göre tam ortalanması */
+/* Mobil ekranda logonun telefona göre tam ortalanması ve bir tık aşağı indirilmesi */
 @media (max-width: 768px) {
   .sd-brand {
     position: absolute !important;
     left: 50% !important;
-    transform: translateX(-50%) !important;
+    top: 55% !important; /* Logoyu bir tık aşağı indirir */
+    transform: translate(-50%, -50%) !important;
     width: max-content !important;
     margin: 0 !important;
     text-align: center !important;
