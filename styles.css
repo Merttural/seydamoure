@@ -1161,26 +1161,3 @@ main {
     transition-duration: 0.01ms !important;
   }
 }
-/* Yorum kartı isim ve detaylarını yan yana genişletme */
-.sd-review__author,
-.sd-reviews__author,
-.sd-review__meta,
-.sd-review-author {
-  width: 100% !important;
-  max-width: none !important;
-  display: block !important;
-  text-align: left !important;
-}
-
-.sd-review__author *,
-.sd-reviews__author *,
-.sd-review__meta * {
-  display: inline !important;
-  width: auto !important;
-  white-space: normal !important;
-}
-
-.sd-review__avatar,
-.sd-reviews__avatar {
-  display: none !important;
-}
