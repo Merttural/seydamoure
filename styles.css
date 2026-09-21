@@ -1161,3 +1161,15 @@ main {
     transition-duration: 0.01ms !important;
   }
 }
+.sd-site-header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
+.sd-menu-button {
+  margin-left: auto !important;
+  position: relative !important;
+  top: 0 !important;
+  right: 0 !important;
+}
