@@ -1161,3 +1161,21 @@ main {
     transition-duration: 0.01ms !important;
   }
 }
+/* Yorum başlığındaki metinleri yan yana düzeltme */
+.sd-review__author-info,
+.sd-reviews__author-info,
+.sd-review__meta {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  gap: 6px !important;
+  white-space: nowrap !important;
+}
+
+.sd-review__author-info span,
+.sd-review__meta span,
+.sd-review__meta p {
+  display: inline-block !important;
+  margin: 0 !important;
+}
