@@ -1162,14 +1162,13 @@ main {
   }
 }
 .sd-site-header {
-  display: flex !important;
-  justify-content: space-between !important;
-  align-items: center !important;
+  position: relative !important;
 }
 
 .sd-menu-button {
-  margin-left: auto !important;
-  position: relative !important;
-  top: 0 !important;
-  right: 0 !important;
+  position: absolute !important;
+  right: 25px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  margin: 0 !important;
 }
