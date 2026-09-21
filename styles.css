@@ -1173,32 +1173,33 @@ main {
     text-align: center !important;
   }
 }
-* WhatsApp kartlarındaki siyah avatarları gizleme */
-.sd-review-card img,
-.sd-review-card svg,
-.sd-review-card figure,
-.sd-review-card [class*="avatar"],
-.sd-review-card [class*="icon"] {
-  display: none !important;
-}
-
-/* WhatsApp başlık yazılarını düzenleme (yan yana ve hizalı durması için) */
+/* WhatsApp inceleme kartı üst başlık düzenlemesi */
 .sd-review-card header {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: flex-start !important;
-  gap: 2px !important;
+  display: block !important;
   padding-left: 0 !important;
+  margin-bottom: 12px !important;
 }
 
+/* Siyah profil dairesini ve içindeki ikonu kesin olarak gizle */
+.sd-review-card header figure,
+.sd-review-card header div,
+.sd-review-card header span:has(svg),
+.sd-review-card header img,
+.sd-review-card header svg {
+  display: none !important;
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* İsim ve alt detayların hizalanması */
 .sd-review-card header strong {
-  display: inline-block !important;
-  white-space: nowrap !important;
+  display: block !important;
   font-size: 1.05rem !important;
+  margin-bottom: 2px !important;
 }
 
 .sd-review-card header small {
   display: block !important;
-  white-space: nowrap !important;
   opacity: 0.7 !important;
 }
