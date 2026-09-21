@@ -1161,19 +1161,15 @@ main {
     transition-duration: 0.01ms !important;
   }
 }
-/* Mobil ekranda header hizalaması ve logonun aşağı indirilmesi */
+/* Mobil ekranda logonun telefona göre tam ortalanması ve bir tık aşağı indirilmesi */
 @media (max-width: 768px) {
-  .sd-site-header {
-    position: relative !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-  }
-
   .sd-brand {
-    position: relative !important;
-    top: 10px !important; /* Logoyu net bir şekilde 10px aşağı indirir */
-    margin: 0 auto !important;
+    position: absolute !important;
+    left: 50% !important;
+    top: 55% !important; /* Logoyu bir tık aşağı indirir */
+    transform: translate(-50%, -50%) !important;
+    width: max-content !important;
+    margin: 0 !important;
     text-align: center !important;
   }
 }
