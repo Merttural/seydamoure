@@ -1161,21 +1161,14 @@ main {
     transition-duration: 0.01ms !important;
   }
 }
-/* Logo boyutunu küçültme ve sağdaki menüden bağımsız ortalama */
-.sd-brand {
-  margin: 0 auto !important;
-  text-align: center !important;
-  display: block !important;
-}
-
-.sd-brand__name {
-  font-size: 1.8rem !important; /* Logo yazısının boyutunu küçültür */
-  letter-spacing: 0.5px !important;
-  line-height: 1.1 !important;
-}
-
-.sd-brand__tagline {
-  font-size: 0.6rem !important; /* Altındaki Organizasyon | Event yazısını orantılı küçültür */
-  letter-spacing: 2px !important;
-  margin-top: 4px !important;
+/* Mobil ekranda logonun telefona göre tam ortalanması */
+@media (max-width: 768px) {
+  .sd-brand {
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: max-content !important;
+    margin: 0 !important;
+    text-align: center !important;
+  }
 }
