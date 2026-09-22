@@ -1173,3 +1173,10 @@ main {
     text-align: center !important;
   }
 }
+/* WhatsApp dairelerini siyah yerine beyaz ve zarif yapma */
+.sd-review-card__avatar {
+  background-color: #ffffff !important;
+  color: #2c2c2c !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05) !important;
+}
